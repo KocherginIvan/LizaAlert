@@ -5,7 +5,7 @@ from PIL import Image, ImageDraw
 import torch
 from typing import Tuple, List
 import matplotlib.pyplot as plt
-import settings
+import LizaAlert.settings as settings
 from groundingdino.util.inference import load_image
 import io
 

@@ -8,7 +8,7 @@ import math
 import groundingdino.datasets.transforms as T
 from groundingdino.util.utils import get_phrases_from_posmap
 from groundingdino.util.inference import  load_image
-import settings 
+import LizaAlert.settings as settings
 import re
 
 def preprocess_caption(caption: str) -> str:
