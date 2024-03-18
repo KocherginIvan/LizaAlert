@@ -1,9 +1,10 @@
-import settings
-import grounding_dino_parser
-import detections_draw
+import LizaAlert.settings as settings
+import LizaAlert.grounding_dino_parser as grounding_dino_parser
+import LizaAlert.detections_draw as detections_draw
+import LizaAlert.xmp_lizaalert as xmp_lizaalert
 import re
 import gradio as gr
-from groundingdino.util.inference import load_model, load_image
+from groundingdino.util.inference import load_model
 
 model = load_model("~/GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py", '~/GroundingDINO/weights')
 
