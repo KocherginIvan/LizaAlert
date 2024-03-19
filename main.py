@@ -52,7 +52,7 @@ def main():
       from zipfile import ZipFile
       for files in tegs_dict:
          metadata_image.tag_images(files, tegs_dict[files], 'All')       
-      with ZipFile("tmp.zip", "w") as zipObj:
+      with ZipFile("tagged_images.zip", "w") as zipObj:
           for idx in tegs_dict:
               dd = idx.split("/")
               idx1 = dd[-1]
