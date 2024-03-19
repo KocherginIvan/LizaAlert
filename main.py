@@ -1,8 +1,7 @@
 import LizaAlert.settings as settings
 import LizaAlert.grounding_dino_parser as grounding_dino_parser
 import LizaAlert.detections_draw as detections_draw
-import LizaAlert.xmp_lizaalert as xmp_lizaalert
-import re
+import LizaAlert.metadata_image as metadata_image
 import gradio as gr
 from groundingdino.util.inference import load_model
 
@@ -51,8 +50,8 @@ def main():
 
   def zip_files(tegs_dict):
       from zipfile import ZipFile
-      xmp_lizaalert.teg_XMP(tegs_dict)
-      xmp_lizaalert.teg_iptc(tegs_dict)
+      for files in tegs_dict:
+         metadata_image.tag_images(files, tegs_dict[files], 'All')       
       with ZipFile("tmp.zip", "w") as zipObj:
           for idx in tegs_dict:
               dd = idx.split("/")
