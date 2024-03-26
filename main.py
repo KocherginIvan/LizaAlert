@@ -5,7 +5,7 @@ import LizaAlert.metadata_image as metadata_image
 import gradio as gr
 from groundingdino.util.inference import load_model
 
-model = load_model("~/GroundingDINO/groundingdino/config/GroundingDINO_SwinT_OGC.py", '~/GroundingDINO/weights')
+model = load_model("groundingdino/config/GroundingDINO_SwinT_OGC.py", "weights/groundingdino_swint_ogc.pth")
 
 
 promt_start = settings.build_promt_start()
@@ -112,7 +112,7 @@ def main():
       image_output = gr.Gallery(columns = 4, height = 960)
       tegs_button.click(text_to_promt, inputs=[promt_input, file_input, checkbox_test, treshold_slider], outputs=[tegs_output, image_output])
       tegs_download_button.click(text_to_promt_zip, inputs = [promt_input, file_input, checkbox_test, treshold_slider], outputs=[file_output])
-  iface.launch()
+  iface.launch(server_port=80 )
 
 if __name__ == "__main__":
     main()

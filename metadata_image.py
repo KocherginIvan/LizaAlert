@@ -22,7 +22,6 @@ from ipywidgets import  Dropdown, Text
 from ipywidgets import Text, Dropdown, Button
 from iptcinfo3 import IPTCInfo
 import piexif
-from zipfile import ZipFile
 
 """# **Model**"""
 
@@ -30,10 +29,10 @@ from zipfile import ZipFile
 def add_keyword_xmp(image_path, keyword):
     try:
         os.system(f'exiftool -XMP:Subject+=" {keyword}" "{image_path}"')
-        print(f"Ключевое слово '{keyword}' добавлено к метаданным XMP {image_path}")
+        #print(f"Ключевое слово '{keyword}' добавлено к метаданным XMP {image_path}")
 
         # Печать доступных ключевых слов XMP
-        print_available_keywords_xmp(image_path)
+        #print_available_keywords_xmp(image_path)
     except Exception as e:
         print(f"Ошибка при добавлении ключевого слова к метаданным XMP {image_path}: {str(e)}")
 
@@ -75,10 +74,10 @@ def add_keywords_to_image_exif(image_path, keywords):
         # Вставка обновленных метаданных EXIF в файл изображения
         piexif.insert(exif_bytes, image_path)
 
-        print(f"Ключевые слова '{keywords}' добавлены к метаданным EXIF.")
+        #print(f"Ключевые слова '{keywords}' добавлены к метаданным EXIF.")
 
         # Печать доступных ключевых слов EXIF
-        print_available_keywords_exif(image_path)
+        #print_available_keywords_exif(image_path)
     except Exception as e:
         print(f"Произошла ошибка при добавлении ключевых слов к метаданным EXIF: {str(e)}")
 
@@ -92,9 +91,9 @@ def print_available_keywords_exif(image_path):
         existing_keywords = exif_dict["Exif"].get(piexif.ExifIFD.UserComment, b"").decode("utf-8")
         existing_keywords_list = existing_keywords.split(",") if existing_keywords else []
 
-        print("Доступные ключевые слова EXIF:")
-        print(" | ".join([f"[{keyword}]" for keyword in existing_keywords_list]))
-        print("\n" + "=" * 50 + "\n")
+        #print("Доступные ключевые слова EXIF:")
+        #print(" | ".join([f"[{keyword}]" for keyword in existing_keywords_list]))
+        #print("\n" + "=" * 50 + "\n")
     except Exception as e:
         print(f"Ошибка при печати доступных ключевых слов EXIF: {str(e)}")
 
@@ -127,10 +126,10 @@ def add_keywords_to_image_iptc(image_path, keywords):
         # Сохранение обновленных метаданных IPTC
         info['keywords'] = existing_keywords_bytes
         info.save()
-        print(f"Ключевые слова '{keywords}' добавлены к метаданным IPTC.")
+        #print(f"Ключевые слова '{keywords}' добавлены к метаданным IPTC.")
 
         # Печать доступных ключевых слов IPTC
-        print_available_keywords_iptc(image_path)
+        #print_available_keywords_iptc(image_path)
 
     except Exception as e:
         print(f"Произошла ошибка при добавлении ключевых слов к метаданным IPTC: {str(e)}")
@@ -204,4 +203,4 @@ def interactive_tagging():
     display(button)
 
 # Запуск интерактивного интерфейса
-interactive_tagging()
+#interactive_tagging()
