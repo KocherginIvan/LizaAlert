@@ -70,7 +70,7 @@ def promt_build(promt_standart, promt_list_1, standart):
         print('')
     #for i in promt_standart:
     #    if i in promt_list:
-            a = 0
+            #a = 0
     #    else:
     #        promt_list.append(i) 
     #        treshold.append(promt_standart[i])         
