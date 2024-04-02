@@ -148,10 +148,16 @@ def draw_img_1(img_list,
       except:
          a=0
       draw = ImageDraw.Draw(imagePIL)
-      for j in range(len(bboxes)):
-          bbox = transform_bbox_coords(bboxes[j])
-          color = class_color[phrases[i][j]]
-          draw.rectangle(bbox, outline=color, width=5)
+      try:
+        for j in range(len(bboxes)):
+            bbox = transform_bbox_coords(bboxes[j])
+            print('Длина',len(bboxes))
+            print('Длина фразы', len(phrases[i]))
+            print('№', j)
+            color = class_color[phrases[i][j]]
+            draw.rectangle(bbox, outline=color, width=5)
+      except:
+         print(phrases[i])
       imagePIL_list.append(imagePIL)
   figu = display_images_grid(imagePIL_list, phrases_3, 1,class_color_1, show_indexes= False,facecolor=facecolor )
   return figu
