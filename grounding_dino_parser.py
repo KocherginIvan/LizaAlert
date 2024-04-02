@@ -1,15 +1,11 @@
-import os
 import torch
 from typing import Tuple, List
 import bisect
-import matplotlib.pyplot as plt
 import numpy as np
-import math
-import groundingdino.datasets.transforms as T
 from groundingdino.util.utils import get_phrases_from_posmap
-from groundingdino.util.inference import  load_image
+from groundingdino.util.inference import  load_image, predict
 import LizaAlert.settings as settings
-import re
+
 
 def preprocess_caption(caption: str) -> str:
   result = caption.lower().strip()
@@ -98,7 +94,7 @@ def parser_tegs(img_list, model, promt, promt_list, BOX_TRESHOLD_list):
   logit_1 = []
   for i in img_list:    
     _, image = load_image(i)
-    boxes, logits, phrases = predict_1(
+    boxes, logits, phrases = predict(
         model=model,
         image=image,
         caption=promt,
@@ -124,7 +120,44 @@ def parser_tegs(img_list, model, promt, promt_list, BOX_TRESHOLD_list):
     lister_draw['phrase_1_list'] = phrases_2
     lister_draw['logits'] = logit_1
   return lister, lister_draw
-
+def one_promt_for_step(img_list, model, promt_list, BOX_TRESHOLD_list):
+  tegs_dict = {}
+  tegs = {}
+  box = []
+  bbox = []
+  log = []
+  blog = []
+  phr = []
+  phr1 = []
+  bphr1 = []
+  bphr = []
+  for i in img_list:
+    _, image = load_image(i)
+    
+    for j in len(promt_list):
+      boxes, logits, phrases = predict(
+          model=model,
+          image=image,
+          caption=promt_list[j],
+          box_threshold=BOX_TRESHOLD_list[j],
+          text_threshold=BOX_TRESHOLD_list[j],        
+          )
+      if boxes != []:
+        box.append(boxes)
+        log.append(logits)
+        phr.append(settings.promt_to_rus(phrases))
+        phr1.append(list(set(settings.promt_to_rus(phrases))))
+    bbox.append(box)
+    blog.append(log)
+    bphr.append(phr)
+    bphr1.append(phr1)
+    tegs[i] = bphr1
+  tegs_dict['img_list'] = img_list
+  tegs_dict['box_list'] = bbox
+  tegs_dict['phrase_list'] = bphr
+  tegs_dict['phrase_1_list'] = bphr1
+  tegs_dict['logits'] = blog
+  return tegs, tegs_dict
 def get_tegs(img_list, promt_1, model):
     promt, promt_list, BOX_TRESHOLD_list = settings.promter(promt_1)
     lister, lister_draw = parser_tegs(img_list, model, promt, promt_list, BOX_TRESHOLD_list)
@@ -133,3 +166,7 @@ def get_tegs_test(img_list, promt_1, TRESHOLD, model):
     promt, promt_list, BOX_TRESHOLD_list = settings.promter_test(promt_1, TRESHOLD)
     lister, lister_draw = parser_tegs(img_list, model, promt, promt_list, BOX_TRESHOLD_list)
     return lister, lister_draw
+def get_tegs_one_for_step(img_list, promt_1, model):
+    _, promt_list, BOX_TRESHOLD_list = settings.promter(promt_1)
+    lister, lister_draw = one_promt_for_step(img_list, model, promt_list, BOX_TRESHOLD_list)
+    return lister, lister_draw    
