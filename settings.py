@@ -68,12 +68,12 @@ def promt_build(promt_standart, promt_list_1, standart):
                 treshold.append(standart)
     except: 
         print('')
-    #for i in promt_standart:
-    #    if i in promt_list:
-            #a = 0
-    #    else:
-    #        promt_list.append(i) 
-    #        treshold.append(promt_standart[i])         
+    for i in promt_standart:
+        if i in promt_list:
+            a = 0
+        else:
+            promt_list.append(i) 
+            treshold.append(promt_standart[i])         
     promt = promt_list[0]
     for i in range(1,len(promt_list)):        
         promt = promt + ' . ' + promt_list[i]

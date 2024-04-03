@@ -3,7 +3,7 @@ import matplotlib.colors as pltc
 import numpy as np
 from PIL import Image, ImageDraw
 import torch
-from typing import Tuple, List
+#from typing import Tuple, List
 import matplotlib.pyplot as plt
 import LizaAlert.settings as settings
 from groundingdino.util.inference import load_image
@@ -151,9 +151,6 @@ def draw_img_1(img_list,
       try:
         for j in range(len(bboxes)):
             bbox = transform_bbox_coords(bboxes[j])
-            print('Длина',len(bboxes))
-            print('Длина фразы', len(phrases[i]))
-            print('№', j)
             color = class_color[phrases[i][j]]
             draw.rectangle(bbox, outline=color, width=5)
       except:
