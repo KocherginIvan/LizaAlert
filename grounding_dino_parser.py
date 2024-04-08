@@ -133,8 +133,8 @@ def one_promt_for_step(img_list, model, promt_list, BOX_TRESHOLD_list):
   bphr = []
   for i in img_list:
     _, image = load_image(i)
-    
-    for j in len(promt_list):
+
+    for j in range(len(promt_list)):
       boxes, logits, phrases = predict(
           model=model,
           image=image,
@@ -142,6 +142,7 @@ def one_promt_for_step(img_list, model, promt_list, BOX_TRESHOLD_list):
           box_threshold=BOX_TRESHOLD_list[j],
           text_threshold=BOX_TRESHOLD_list[j],        
           )
+  
       if boxes != []:
         box.append(boxes)
         log.append(logits)
@@ -151,7 +152,8 @@ def one_promt_for_step(img_list, model, promt_list, BOX_TRESHOLD_list):
     blog.append(log)
     bphr.append(phr)
     bphr1.append(phr1)
-    tegs[i] = bphr1
+  tegs[i] = bphr1
+
   tegs_dict['img_list'] = img_list
   tegs_dict['box_list'] = bbox
   tegs_dict['phrase_list'] = bphr

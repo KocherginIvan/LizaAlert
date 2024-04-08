@@ -3,7 +3,6 @@ import matplotlib.colors as pltc
 import numpy as np
 from PIL import Image, ImageDraw
 import torch
-#from typing import Tuple, List
 import matplotlib.pyplot as plt
 import LizaAlert.settings as settings
 from groundingdino.util.inference import load_image
@@ -109,19 +108,22 @@ def display_images_grid(images,
   img_bbox_list = []
   n_images = len(images)
   plt.figure(figsize=(figsize_ratio[0], figsize_ratio[1]), facecolor=facecolor)
+  
   for i in range(n_images):
       plt.figure(figsize=(figsize_ratio[0], figsize_ratio[1]), facecolor=facecolor)
       img = images[i]
       plt.imshow(img, cmap=cmap)
       plt.axis('off')
-      if showTitle:
-        color = []
-        for j in images_titles[i]:
-          color.append(class_color_1[j])
-        color_title(images_titles[i],color)
-      if show_indexes:
-          plt.text(0.5, 0.9, 'index: '+str(startIndex+i), color='magenta', horizontalalignment='center', verticalalignment='center', fontsize=15, fontweight='bold', transform=ax.transAxes)
-  
+      try:
+        if showTitle:
+          color = []
+          for j in images_titles[i]:
+            color.append(class_color_1[j])
+          color_title(images_titles[i],color)
+        if show_indexes:
+            plt.text(0.5, 0.9, 'index: '+str(startIndex+i), color='magenta', horizontalalignment='center', verticalalignment='center', fontsize=15, fontweight='bold', transform=ax.transAxes)
+      except:
+         print('')
       plt.tight_layout()
       fig = plt.gcf()
       plt.show()

@@ -3,11 +3,11 @@ def promt_st():
     promt_standart = {
     'car' : 0.3,
     'dog' : 0.35,
-    'helicopter' : 0.5,
-    'copter' : 0.35,
+    'helicopter' : 0.6,
+    'drone' : 0.35,
     'ambulance': 0.5  ,
-    'rescuer': 0.5  ,
-    'forest': 0.5  ,
+    #'rescuer': 0.5  ,
+    #'forest': 0.5  ,
     'horse': 0.5  ,
     'stretcher': 0.5  ,
     'road': 0.5  ,
@@ -15,20 +15,20 @@ def promt_st():
     'tears': 0.5  ,
     'police': 0.5  ,
     'snowmobile': 0.5  ,
-    'diver': 0.5  ,
-    'reservoir': 0.5  ,
+    'water': 0.5  ,
     'tractor': 0.5  ,
-    'quad bike': 0.5  ,
+    #'quad bike': 0.5  ,
     'truck': 0.5  ,
+    'lake': 0.45
     }
     promt_rus_dict = {
     'car': 'Машина',
     'dog':  'Собака',
     'helicopter': 'Вертолет',
-    'copter': 'БПЛА',
+    'drone': 'БПЛА',
     'ambulance': 'Скорая помощь',
-    'rescuer': 'Спасатель',
-    'forest': 'Лес',
+    #'rescuer': 'Спасатель',
+    #'forest': 'Лес',
     'horse': 'Лошадь',
     'stretcher': 'Носилки',
     'road': 'Дорога',
@@ -36,12 +36,11 @@ def promt_st():
     'tears': 'Слёзы',
     'police': 'Полиция',
     'snowmobile': 'Снегоход',
-    'diver': 'Водолаз',
     'reservoir': 'Водоём',
     'army': 'Армия',
     'suspension bridge': 'Навесной мост',
     'ferry crossing': 'Паромная переправа',
-    'tractor': 'Трактор',
+    'tractor': 'Вездеход',
     'quad bike': 'Квадроцикл',
     'truck': 'Грузовик',
     }
@@ -49,12 +48,18 @@ def promt_st():
 def build_promt_start():
     promt_standart, _, _ = promt_st()    
     pt_st = []
+    th_st = []
     for i in promt_standart:
         pt_st.append(i)
+        th_st.append(promt_standart[i])
     promt_start = pt_st[0]
     for i in range(1, len(pt_st)):
         promt_start += ' . ' + pt_st[i]
+
+          
     return promt_start
+
+
 def promt_build(promt_standart, promt_list_1, standart):
     promt_list = []
     treshold = []
