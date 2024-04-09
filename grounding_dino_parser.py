@@ -123,17 +123,16 @@ def parser_tegs(img_list, model, promt, promt_list, BOX_TRESHOLD_list):
 def one_promt_for_step(img_list, model, promt_list, BOX_TRESHOLD_list):
   tegs_dict = {}
   tegs = {}
-  box = []
   bbox = []
-  log = []
   blog = []
-  phr = []
-  phr1 = []
   bphr1 = []
   bphr = []
   for i in img_list:
     _, image = load_image(i)
-
+    box = []
+    log = []
+    phr = []
+    phr1 = []
     for j in range(len(promt_list)):
       boxes, logits, phrases = predict(
           model=model,

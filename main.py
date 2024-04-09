@@ -126,7 +126,7 @@ with gr.Blocks() as iface:
       file_input = gr.File(file_count="multiple")
       with gr.Column():
         checkbox_test = gr.Checkbox(label='Режим подбора параметров')
-        checkbox_one = gr.Checkbox(label='Режим одиночных проптов')
+        checkbox_one = gr.Checkbox(label='Режим одиночных промптов')
         treshold_slider = gr.Slider(0, 1, value=0.35, label="Treshold")
         tegs_button = gr.Button("Показать тегированные изображения")
         tegs_download_button = gr.Button("Скачать тегированные изображения")
