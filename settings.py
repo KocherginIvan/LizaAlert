@@ -4,7 +4,7 @@ def promt_st():
     'car' : 0.3,
     'dog' : 0.35,
     'helicopter' : 0.6,
-    'drone' : 0.35,
+    'drone' : 0.45,
     'ambulance': 0.5  ,
     #'rescuer': 0.5  ,
     #'forest': 0.5  ,
@@ -13,7 +13,7 @@ def promt_st():
     'road': 0.5  ,
     'hugs': 0.5  ,
     'tears': 0.5  ,
-    'police': 0.5  ,
+    #'police': 0.5  ,
     'snowmobile': 0.5  ,
     'water': 0.5  ,
     'tractor': 0.5  ,
@@ -44,6 +44,8 @@ def promt_st():
     'quad bike': 'Квадроцикл',
     'truck': 'Грузовик',
     }
+    #color_standart = {'Машина' : 
+    #    }
     return promt_standart, standart, promt_rus_dict
 def build_promt_start():
     promt_standart, _, _ = promt_st()    

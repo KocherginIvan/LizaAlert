@@ -145,10 +145,9 @@ def draw_img_1(img_list,
       phrases_3.append(phrases_2[i])
       image_source, image = load_image(img_list[i])
       imagePIL = Image.fromarray(image_source)
-      try:
-        bboxes = (boxes_list[i]*torch.Tensor(imagePIL.size).tile((boxes_list[i].size()[0], int(boxes_list[i].size()[1]/2)))).to(dtype=torch.int16).tolist()        
-      except:
-         a=0
+ 
+      bboxes = (boxes_list[i]*torch.Tensor(imagePIL.size).tile((boxes_list[i].size()[0], int(boxes_list[i].size()[1]/2)))).to(dtype=torch.int16).tolist()        
+
       draw = ImageDraw.Draw(imagePIL)
       try:
         for j in range(len(bboxes)):
