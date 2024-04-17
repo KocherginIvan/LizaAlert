@@ -144,7 +144,9 @@ def draw_img_1(img_list,
                ):
   class_color, class_color_1 = all_colors(promter)
   imagePIL_list = []
-  phrases_3 = []  
+  phrases_3 = [] 
+  print(f'phrases_2 = {phrases_2}')
+  print(f'img_list = {img_list}')
   for i in range(len(img_list)):
       phrases_3.append(phrases_2[i])
       image_source, _ = load_image(img_list[i])
