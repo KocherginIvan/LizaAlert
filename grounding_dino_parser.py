@@ -132,7 +132,6 @@ def one_promt_for_step(img_list, model, promt_list, BOX_TRESHOLD_list):
     box = []
     log = []
     phr = []
-    phr1 = []
     for j in range(len(promt_list)):
       boxes, logits, phrases = predict(
           model=model,
@@ -147,8 +146,7 @@ def one_promt_for_step(img_list, model, promt_list, BOX_TRESHOLD_list):
         box.append(boxes)
         log += logits
         phr += phrases
-        #phr1 += list(set(settings.promt_to_rus(phrases)))
-    print(box[0])
+    #print(box[0])
     b = box[0]
     for k in range(1,len(box)):
       b = torch.cat((b, box[k]), 0)
@@ -163,7 +161,7 @@ def one_promt_for_step(img_list, model, promt_list, BOX_TRESHOLD_list):
   tegs_dict['phrase_list'] = bphr
   tegs_dict['phrase_1_list'] = bphr1
   tegs_dict['logits'] = blog
-  print(tegs_dict)
+  #print(tegs_dict)
   #print(f'tegs = {tegs}')
   return tegs, tegs_dict
 def get_tegs(img_list, promt_1, model):
@@ -176,5 +174,9 @@ def get_tegs_test(img_list, promt_1, TRESHOLD, model):
     return lister, lister_draw
 def get_tegs_one_for_step(img_list, promt_1, model):
     _, promt_list, BOX_TRESHOLD_list = settings.promter(promt_1)
+    lister, lister_draw = one_promt_for_step(img_list, model, promt_list, BOX_TRESHOLD_list)
+    return lister, lister_draw
+def get_tegs_one_for_step_test(img_list, promt_1, TRESHOLD, model):
+    _, promt_list, BOX_TRESHOLD_list = settings.promter_test(promt_1, TRESHOLD)
     lister, lister_draw = one_promt_for_step(img_list, model, promt_list, BOX_TRESHOLD_list)
     return lister, lister_draw

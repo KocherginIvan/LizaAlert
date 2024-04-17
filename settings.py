@@ -22,11 +22,11 @@ def promt_st():
     'lake': 0.45
     }
     promt_rus_dict = {
-    'car': 'Машина',
+    'car': 'Транспортное средство',
     'dog':  'Собака',
-    'helicopter': 'Вертолет',
-    'drone': 'БПЛА',
-    'ambulance': 'Скорая помощь',
+    'helicopter': 'БПЛА/Вертолет',
+    'drone': 'БПЛА/Вертолет',
+    'ambulance': 'Транспортное средство',
     #'rescuer': 'Спасатель',
     #'forest': 'Лес',
     'horse': 'Лошадь',
@@ -35,17 +35,19 @@ def promt_st():
     'hugs': 'Объятия',
     'tears': 'Слёзы',
     'police': 'Полиция',
-    'snowmobile': 'Снегоход',
+    'snowmobile': 'Транспортное средство',
     'reservoir': 'Водоём',
     'army': 'Армия',
     'suspension bridge': 'Навесной мост',
     'ferry crossing': 'Паромная переправа',
-    'tractor': 'Вездеход',
-    'quad bike': 'Квадроцикл',
-    'truck': 'Грузовик',
+    'tractor': 'Транспортное средство',
+    'quad bike': 'Транспортное средство',
+    'truck': 'Транспортное средство',
+    'lake': 'Озеро'
     }
     #color_standart = {'Машина' : 
     #    }
+    
     return promt_standart, standart, promt_rus_dict
 def build_promt_start():
     promt_standart, _, _ = promt_st()    
@@ -60,7 +62,35 @@ def build_promt_start():
 
           
     return promt_start
-
+def color_seach():
+    search_list = [
+        'Ватсон',
+        'Будагов',
+        'СнежныйБарс',
+        'Василий',
+        'Воркута',
+        'Веснушка',
+        'ВК74',
+        'Мохнатый',
+        'Евген',
+        'Незабудка',
+        'Лентяй',
+        'Якимчинк',
+        'Крапива',
+        'Ёж',
+        'Пифа',
+        'ГБ',
+        'Семён',
+        'Дулин',
+        'Весна',
+        'Кеслер',
+        'Физрук',
+        'Клёцин',
+        'Нибилунг',
+        'МиСи',
+        'Чайка'
+        ]
+    return search_list
 
 def promt_build(promt_standart, promt_list_1, standart):
     promt_list = []
@@ -75,12 +105,12 @@ def promt_build(promt_standart, promt_list_1, standart):
                 treshold.append(standart)
     except: 
         print('')
-    for i in promt_standart:
-        if i in promt_list:
-            a = 0
-        else:
-            promt_list.append(i) 
-            treshold.append(promt_standart[i])         
+#    for i in promt_standart:
+#        if i in promt_list:
+#            a = 0
+#        else:
+#            promt_list.append(i) 
+#            treshold.append(promt_standart[i])         
     promt = promt_list[0]
     for i in range(1,len(promt_list)):        
         promt = promt + ' . ' + promt_list[i]

@@ -17,20 +17,24 @@ def fig2img(fig):
     return img 
 
 def all_colors(promt_list):
-  colors = [k for k,v in pltc.cnames.items()]
+  colors = [k for k,_ in pltc.cnames.items()]
   col = [2, 3, 9, 10, 11, 13, 14, 15, 17, 19, 21, 23, 25, 28, 30, 40, 48, 51, 55, 54, 68, 96, 106, 60, 52, 142, 120, 125, 117, 100, 80, 71]
   all_colors = []
+  search_list = settings.color_seach()
   for i in col:
     all_colors.append(colors[i])
   class_color_1 = {}
-  j = 0
-  for i in promt_list: 
-    if j != len(col):
-      class_color_1[i] = all_colors[j]
-      j += 1
+  j = 1
+  for i in promt_list:
+    if i in search_list:
+      class_color_1[i] = all_colors[0]
     else:
-      j = 0
-      class_color_1[i] = all_colors[j]     
+      if j != len(col):
+        class_color_1[i] = all_colors[j]
+        j += 1
+      else:
+        j = 1
+        class_color_1[i] = all_colors[j]     
   class_color = {}
   for i in promt_list:
     class_color[i] = tuple(webcolors.name_to_rgb(class_color_1[i]))
@@ -143,9 +147,9 @@ def draw_img_1(img_list,
   phrases_3 = []  
   for i in range(len(img_list)):
       phrases_3.append(phrases_2[i])
-      image_source, image = load_image(img_list[i])
+      image_source, _ = load_image(img_list[i])
       imagePIL = Image.fromarray(image_source)
- 
+      print(type(boxes_list[i]))
       bboxes = (boxes_list[i]*torch.Tensor(imagePIL.size).tile((boxes_list[i].size()[0], int(boxes_list[i].size()[1]/2)))).to(dtype=torch.int16).tolist()        
 
       draw = ImageDraw.Draw(imagePIL)

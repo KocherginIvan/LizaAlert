@@ -36,6 +36,22 @@ def tegs_one(files, promt_list):
                         )
   return tegs_dict, lister_draw
 
+def tegs_one_test(files, promt_list, Treshold):
+  tegs_dict, lister_draw = grounding_dino_parser.get_tegs_one_for_step_test(
+                        files,
+                        promt_list,
+                        Treshold,
+                        model
+                        )
+  return tegs_dict, lister_draw
+def face_rec(tegs_dict, lister_draw, promt_list):
+  for i in range(len(lister_draw['img_list'])):
+    teg_list, bbox_list, phrase_list, logists = recongnishen.path(lister_draw['img_list'][i], promt_list)
+    lister_draw['box_list'][i].append(bbox_list)
+    lister_draw['phrase_list'][i].append(phrase_list)
+    lister_draw['phrase_1_list'][i].append(phrase_list.set())
+    lister_draw['logits'][i].append(logists)
+    tegs_dict[lister_draw['img_list'][i]].append(phrase_list.set())
 def draw_test(lister_draw, promt_list):
   fig = detections_draw.visualize_detections(lister_draw['img_list'],
                                       lister_draw['box_list'],
@@ -78,8 +94,12 @@ def text_to_promt(promter, files, check, Treshold, check1):
   promt_list.pop()
   promt_list_rus = settings.promt_to_rus(promt_list)
   if check1 == True:
-    tegs_dict, lister_draw = tegs_one(files, promt_list)
-    figur = draw(lister_draw, promt_list_rus)
+    if check == True:
+      tegs_dict, lister_draw = tegs_one_test(files, promt_list, Treshold)
+      figur = draw_test(lister_draw, promt_list_rus)
+    else:
+      tegs_dict, lister_draw = tegs_one(files, promt_list)
+      figur = draw_test(lister_draw, promt_list_rus)
   else:
     if check == True:
       tegs_dict, lister_draw = tegs_test(files, promt_list, Treshold)
@@ -109,10 +129,11 @@ def text_to_promt_zip(promter, files, check):
     promt += t + ' . '
   promt_list = re.split(r'\ . ', promt)
   promt_list.pop()
+  promt_list_rus = settings.promt_to_rus(promt_list)
   if check == True:
-    tegs_dict, _ = tegs_one(files, promt_list)
+    tegs_dict, _ = tegs_one(files, promt_list_rus)
   else:
-    tegs_dict, _ = tegs(files, promt_list)
+    tegs_dict, _ = tegs(files, promt_list_rus)
   zip_file = zip_files(tegs_dict)
 
   torch.cuda.empty_cache()
@@ -137,7 +158,7 @@ with gr.Blocks() as iface:
 
     image_output = gr.Gallery(columns = 4, height = 960)
     tegs_button.click(text_to_promt, inputs=[promt_input, file_input, checkbox_test, treshold_slider, checkbox_one], outputs=[tegs_output, image_output])
-    tegs_download_button.click(text_to_promt_zip, inputs = [promt_input, file_input, checkbox_one, treshold_slider],  outputs=[file_output])
+    tegs_download_button.click(text_to_promt_zip, inputs = [promt_input, file_input, checkbox_one],  outputs=[file_output])
 
 iface.launch(server_port = 7860, root_path ='/app')
 
