@@ -246,31 +246,3 @@ def get_all_vectors() -> dict:
 get_all_calnames()
 VECTORS = get_all_vectors()  # словарь со Всеми векторами всех поисковиков    
 #) enveronments
-def reco_face(img_path):
-
-    faces = Faces_Recognition(img_path)
-    ''' 
-    faces.jit - Сколько раз повторять выборку лица при расчете кодировки. 
-    Чем выше, тем точнее, но медленнее (т. е. 100 — в 100 раз медленнее)
-    '''
-    faces.jit = 1  
-
-    # 'hog'- CPU, 'cnn'- GPU 
-    faces.loc_model = 'hog' 
-
-    '''
-    Какое расстояние между лицами, чтобы считать его совпадающим. 
-    Нижний более строгий. 
-    Float - 0,6 — типичная лучшая производительность.
-    '''
-    faces.tolerance = 0.6
-
-    '''
-    param: number_of_times_to_upsample: сколько раз повышать дискретизацию изображения в поисках лиц. 
-    Чем выше число, тем меньше лица.
-    '''
-    faces.number_of_times_to_upsample = 1
-
-    rez = faces.recognition()
-    print(rez)
-    return rez
