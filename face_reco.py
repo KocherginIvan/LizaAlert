@@ -1,8 +1,4 @@
 import numpy as np
-#import os
-# from PIL import Image, ImageDraw
-
-#from sqlalch import get_id_for_calname, add_vector
 from sqlalchemy import create_engine, Column, Integer, String, BLOB, ForeignKey
 from sqlalchemy.orm import declarative_base, relationship, sessionmaker
 from sqlalchemy.types import TypeDecorator, PickleType

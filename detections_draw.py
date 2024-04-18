@@ -25,7 +25,8 @@ def all_colors(promt_list):
     all_colors.append(colors[i])
   class_color_1 = {}
   j = 1
-  for i in promt_list:
+  promter_list = promt_list + search_list
+  for i in promter_list:
     if i in search_list:
       class_color_1[i] = all_colors[0]
     else:
@@ -34,9 +35,10 @@ def all_colors(promt_list):
         j += 1
       else:
         j = 1
-        class_color_1[i] = all_colors[j]     
+        class_color_1[i] = all_colors[j]
+       
   class_color = {}
-  for i in promt_list:
+  for i in promter_list:
     class_color[i] = tuple(webcolors.name_to_rgb(class_color_1[i]))
   return class_color, class_color_1
 
@@ -145,23 +147,28 @@ def draw_img_1(img_list,
   class_color, class_color_1 = all_colors(promter)
   imagePIL_list = []
   phrases_3 = [] 
-  print(f'phrases_2 = {phrases_2}')
-  print(f'img_list = {img_list}')
+  #print(f'phrases_2 = {phrases_2}')
+  #print(f'img_list = {img_list}')
   for i in range(len(img_list)):
       phrases_3.append(phrases_2[i])
       image_source, _ = load_image(img_list[i])
       imagePIL = Image.fromarray(image_source)
-      print(type(boxes_list[i]))
-      bboxes = (boxes_list[i]*torch.Tensor(imagePIL.size).tile((boxes_list[i].size()[0], int(boxes_list[i].size()[1]/2)))).to(dtype=torch.int16).tolist()        
-
+      #print(type(boxes_list[i]))
+      try:
+        bboxes = (boxes_list[i]*torch.Tensor(imagePIL.size).tile((boxes_list[i].size()[0], int(boxes_list[i].size()[1]/2)))).to(dtype=torch.int16).tolist()        
+      except:
+         print('no_box', boxes_list[i])
       draw = ImageDraw.Draw(imagePIL)
       try:
         for j in range(len(bboxes)):
             bbox = transform_bbox_coords(bboxes[j])
+            print(bbox)
+            print(phrases[i][j])
             color = class_color[phrases[i][j]]
+            print(color)
             draw.rectangle(bbox, outline=color, width=5)
       except:
-         print(phrases[i])
+         print('no img', i, phrases[i])
       imagePIL_list.append(imagePIL)
   figu = display_images_grid(imagePIL_list, phrases_3, 1,class_color_1, show_indexes= False,facecolor=facecolor )
   return figu
