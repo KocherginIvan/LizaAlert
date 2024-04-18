@@ -22,11 +22,11 @@ def promt_st():
     'lake': 0.45
     }
     promt_rus_dict = {
-    'car': 'Транспортное средство',
-    'dog':  'Собака',
+    'car': 'транспортное средство',
+    'dog':  'собака',
     'helicopter': 'БПЛА/Вертолет',
     'drone': 'БПЛА/Вертолет',
-    'ambulance': 'Транспортное средство',
+    'ambulance': 'транспортное средство',
     #'rescuer': 'Спасатель',
     #'forest': 'Лес',
     'horse': 'Лошадь',
@@ -35,14 +35,14 @@ def promt_st():
     'hugs': 'Объятия',
     'tears': 'Слёзы',
     'police': 'Полиция',
-    'snowmobile': 'Транспортное средство',
+    'snowmobile': 'транспортное средство',
     'reservoir': 'Водоём',
     'army': 'Армия',
     'suspension bridge': 'Навесной мост',
     'ferry crossing': 'Паромная переправа',
-    'tractor': 'Транспортное средство',
-    'quad bike': 'Транспортное средство',
-    'truck': 'Транспортное средство',
+    'tractor': 'транспортное средство',
+    'quad bike': 'транспортное средство',
+    'truck': 'транспортное средство',
     'lake': 'Озеро'
     }
     #color_standart = {'Машина' : 
@@ -141,10 +141,13 @@ def promter_test(promt_list_1, treshold):
     return promt, promt_list, treshold
 def promt_to_rus(promt_list):
     _, _, promt_rus_dict = promt_st()
+    search_list = color_seach()
     promt_list_rus = []
     for i in promt_list:
         if i in promt_rus_dict:
             promt_list_rus.append(promt_rus_dict[i])
         else:
             promt_list_rus.append(i)
+    for i in search_list:
+        promt_list_rus.append(i)
     return promt_list_rus
