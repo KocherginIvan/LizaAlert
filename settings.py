@@ -148,6 +148,6 @@ def promt_to_rus(promt_list):
             promt_list_rus.append(promt_rus_dict[i])
         else:
             promt_list_rus.append(i)
-    for i in search_list:
-        promt_list_rus.append(i)
+    #for i in search_list:
+    #    promt_list_rus.append(i)
     return promt_list_rus
