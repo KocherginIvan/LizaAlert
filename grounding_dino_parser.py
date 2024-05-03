@@ -140,13 +140,10 @@ def one_promt_for_step(img_list, model, promt_list, BOX_TRESHOLD_list):
           box_threshold=BOX_TRESHOLD_list[j],
           text_threshold=BOX_TRESHOLD_list[j],        
           )
-      #print(promt_list[j])
       if boxes != []:
-        #box += boxes
         box.append(boxes)
         log += logits
         phr += phrases
-    #print(box[0])
     b = box[0]
     for k in range(1,len(box)):
       b = torch.cat((b, box[k]), 0)
@@ -161,9 +158,8 @@ def one_promt_for_step(img_list, model, promt_list, BOX_TRESHOLD_list):
   tegs_dict['phrase_list'] = bphr
   tegs_dict['phrase_1_list'] = bphr1
   tegs_dict['logits'] = blog
-  #print(tegs_dict)
-  #print(f'tegs = {tegs}')
   return tegs, tegs_dict
+
 def get_tegs(img_list, promt_1, model):
     promt, promt_list, BOX_TRESHOLD_list = settings.promter(promt_1)
     lister, lister_draw = parser_tegs(img_list, model, promt, promt_list, BOX_TRESHOLD_list)

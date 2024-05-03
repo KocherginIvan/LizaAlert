@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 import LizaAlert.settings as settings
 from groundingdino.util.inference import load_image
 import io
-
+import re
 
 def fig2img(fig): 
     buf = io.BytesIO() 
@@ -20,15 +20,17 @@ def all_colors(promt_list):
   colors = [k for k,_ in pltc.cnames.items()]
   col = [2, 3, 9, 10, 11, 13, 14, 15, 17, 19, 21, 23, 25, 28, 30, 40, 48, 51, 55, 54, 68, 96, 106, 60, 52, 142, 120, 125, 117, 100, 80, 71]
   all_colors = []
-  search_list = settings.color_seach()
+  search_list, season_list = settings.color_seach()
   for i in col:
     all_colors.append(colors[i])
   class_color_1 = {}
-  j = 1
-  promter_list = promt_list + search_list
+  j = 2
+  promter_list = promt_list + search_list + season_list
   for i in promter_list:
     if i in search_list:
       class_color_1[i] = all_colors[0]
+    elif i in season_list:
+      class_color_1[i] = all_colors[1]
     else:
       if j != len(col):
         class_color_1[i] = all_colors[j]
@@ -101,6 +103,7 @@ def display_images_grid(images,
                         images_titles,
                         imagesNumber_per_row,
                         class_color_1,
+                        file_name_list,
                         show_indexes=True,
                         startIndex=0,
                         showTitle = True,
@@ -126,10 +129,9 @@ def display_images_grid(images,
           for j in images_titles[i]:
             color.append(class_color_1[j])
           color_title(images_titles[i],color)
-        if show_indexes:
-            plt.text(0.5, 0.9, 'index: '+str(startIndex+i), color='magenta', horizontalalignment='center', verticalalignment='center', fontsize=15, fontweight='bold', transform=ax.transAxes)
       except:
          print('')
+      plt.text(300, 700, 'File_name: '+ file_name_list[i], color='magenta', horizontalalignment='center', verticalalignment='center', fontsize=15, fontweight='bold')
       plt.tight_layout()
       fig = plt.gcf()
       plt.show()
@@ -147,13 +149,13 @@ def draw_img_1(img_list,
   class_color, class_color_1 = all_colors(promter)
   imagePIL_list = []
   phrases_3 = [] 
-  #print(f'phrases_2 = {phrases_2}')
-  #print(f'img_list = {img_list}')
+  file_name_list= []
   for i in range(len(img_list)):
+      file_name = re.split(r'\/', img_list[i])[-1]
+      file_name_list.append(file_name)
       phrases_3.append(phrases_2[i])
       image_source, _ = load_image(img_list[i])
       imagePIL = Image.fromarray(image_source)
-      #print(type(boxes_list[i]))
       try:
         bboxes = (boxes_list[i]*torch.Tensor(imagePIL.size).tile((boxes_list[i].size()[0], int(boxes_list[i].size()[1]/2)))).to(dtype=torch.int16).tolist()        
       except:
@@ -162,15 +164,12 @@ def draw_img_1(img_list,
       try:
         for j in range(len(bboxes)):
             bbox = transform_bbox_coords(bboxes[j])
-            print(bbox)
-            print(phrases[i][j])
             color = class_color[phrases[i][j]]
-            print(color)
             draw.rectangle(bbox, outline=color, width=5)
       except:
          print('no img', i, phrases[i])
       imagePIL_list.append(imagePIL)
-  figu = display_images_grid(imagePIL_list, phrases_3, 1,class_color_1, show_indexes= False,facecolor=facecolor )
+  figu = display_images_grid(imagePIL_list, phrases_3, 1,class_color_1,file_name_list, show_indexes= False,facecolor=facecolor)
   return figu
 
 def draw_img(img_list, boxes_list, promt, phrases_2, facecolor, promter):   
@@ -191,6 +190,7 @@ def visualize_detections(
       plt.imshow(image)
       plt.axis("off")
       ax = plt.gca()
+
       try:
         bboxes = (boxes[i]*torch.Tensor(img.size).tile((boxes[i].size()[0], int(boxes[i].size()[1]/2)))).to(dtype=torch.int16).tolist()    
         for box, _cls, score in zip(bboxes, classes[i], scores[i]):

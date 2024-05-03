@@ -14,18 +14,21 @@ import numpy as np
 import cv2
 import re
 
-os.system('fuser -k 7960/tcp')
+os.system('fuser -k 7860/tcp')
 model = load_model("groundingdino/config/GroundingDINO_SwinT_OGC.py", "weights/groundingdino_swint_ogc.pth")
 model_path_list = ['/home/lizaalert/ProjectLiza/GroundingDINO/resnet50_citi_out.pth', '/home/lizaalert/ProjectLiza/GroundingDINO/resnet50_epoch_20.pth', '/home/lizaalert/ProjectLiza/GroundingDINO/resnet50_daytime.pth']
 path_out = '/home/lizaalert/ProjectLiza/Photo'
 promt_start = settings.build_promt_start()
 # Загрузка обученной модели season
-model_list = []
-for path in model_path_list:
-  model_city = resnet50()
-  model_city.load_state_dict(torch.load(path))
-  model_city.eval()
-  model_list.append(model_city)
+model_season = resnet50()
+model_season.load_state_dict(torch.load(model_path_list[0]))
+model_season.eval()
+model_city = resnet50()
+model_city.load_state_dict(torch.load(model_path_list[1]))
+model_city.eval()
+model_day = resnet50()
+model_day.load_state_dict(torch.load(model_path_list[2]))
+model_day.eval()
 
 def print_phrases_true(phrases_true):
   with open('/home/lizaalert/ProjectLiza/phrases_true.txt', 'a') as myfile:
@@ -272,35 +275,37 @@ def text_to_promt_zip(promter, files, check, Treshold, jit, tolerance, number_of
   torch.cuda.empty_cache()
   return zip_file
 
-with gr.Blocks() as iface:
+with gr.Blocks(delete_cache = (600,600)) as iface:
     gr.Markdown("Тегирование изображений")
-    promt_input = gr.Textbox(f'{promt_start}', label='Promt')
+    promt_input = gr.Textbox(f'{promt_start}', label='Promt', visible = False)
 
     with gr.Row():
       file_input = gr.File(file_count="multiple")
       file_list = gr.Textbox(visible = False)
       with gr.Column():
-        checkbox_test = gr.Checkbox(label='Режим подбора параметров')
-        checkbox_one = gr.Checkbox(label='Режим одиночных промптов')
-        treshold_slider = gr.Slider(0, 1, value=0.35, step = 0.01, label="Treshold")
-        accuracy_slider = gr.Slider(0, 1, value=0.7, step = 0.1, label="accuracy")
-        jit_slider = gr.Slider(0, 100, value = 10, step = 1, label = 'jit: Сколько раз повторять выборку лица при расчете кодировки. Чем выше, тем точнее, но медленнее (т. е. 100 — в 100 раз медленнее)')
-        tolerance_slider = gr.Slider(0, 1 , value = 0.55, step = 0.01, label = 'tolerance: Какое расстояние между лицами, чтобы считать его совпадающим.Нижний более строгий.')
-        number_of_times_to_upsample_slider = gr.Slider(1, 10, value = 1, step = 1, label = 'number_of_times_to_upsample: Cколько раз повышать дискретизацию изображения в поисках лиц. Чем выше число, тем меньше лица.' )
+        checkbox_test = gr.Checkbox(label='Режим подбора параметров', visible = False)
+        checkbox_one = gr.Checkbox(label='Режим одиночных промптов', visible = False)
+        treshold_slider = gr.Slider(0, 1, value=0.35, step = 0.01, label="Treshold", visible = False)
+        accuracy_slider = gr.Slider(0, 1, value=0.7, step = 0.1, label="accuracy", visible = False)
+        jit_slider = gr.Slider(0, 100, value = 10, step = 1, label = 'jit: Сколько раз повторять выборку лица при расчете кодировки. Чем выше, тем точнее, но медленнее (т. е. 100 — в 100 раз медленнее)', visible = False)
+        tolerance_slider = gr.Slider(0, 1 , value = 0.55, step = 0.01, label = 'tolerance: Какое расстояние между лицами, чтобы считать его совпадающим.Нижний более строгий.', visible = False)
+        number_of_times_to_upsample_slider = gr.Slider(1, 10, value = 1, step = 1, label = 'number_of_times_to_upsample: Cколько раз повышать дискретизацию изображения в поисках лиц. Чем выше число, тем меньше лица.', visible = False )
         tegs_button = gr.Button("Показать тегированные изображения")
         tegs_download_button = gr.Button("Скачать тегированные изображения")
 
     with gr.Row():
       file_output = gr.File()
       tegs_output = gr.Textbox(label='Словарь тегов')
-    
+
     file_input.clear(clear, inputs = file_list)
     file_input.upload(ff, inputs = file_input, outputs = file_list)
     image_output = gr.Gallery(columns = 4, height = 960)
     tegs_button.click(text_to_promt, inputs=[promt_input, file_input, checkbox_test, treshold_slider, checkbox_one, jit_slider, tolerance_slider, number_of_times_to_upsample_slider, accuracy_slider], outputs=[tegs_output, image_output])
     tegs_download_button.click(text_to_promt_zip, inputs = [promt_input, file_input, checkbox_test, treshold_slider, jit_slider, tolerance_slider, number_of_times_to_upsample_slider, accuracy_slider],  outputs=[file_output])
+    
+    gr.HTML(value="<div style='margin-top: 0rem, margin-bottom: 0rem, align: center'><center><p style='margin-top: 1rem, margin-bottom: 1rem'>[ <a href='https://lizaalert.host/advanced/' _target='blank'>Рассширенная версия</a> ]</p></center></div>")
 
-iface.launch(server_port = 7960, root_path ='/advanced')
+iface.launch(server_port = 7860, root_path ='/app')
 
 if __name__ == "__main__":
     main()

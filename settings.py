@@ -5,45 +5,46 @@ def promt_st():
     'dog' : 0.35,
     'helicopter' : 0.6,
     'drone' : 0.45,
-    'ambulance': 0.5  ,
+    'ambulance': 0.4  ,
     #'rescuer': 0.5  ,
     #'forest': 0.5  ,
-    'horse': 0.5  ,
-    'stretcher': 0.5  ,
-    'road': 0.5  ,
-    'hugs': 0.5  ,
-    'tears': 0.5  ,
+    'horse': 0.4  ,
+    'stretcher': 0.4  ,
+    'road': 0.4  ,
+    'hugs': 0.4  ,
+    #'tears': 0.5  ,
     #'police': 0.5  ,
-    'snowmobile': 0.5  ,
-    'water': 0.5  ,
-    'tractor': 0.5  ,
+    'snowmobile': 0.4  ,
+    'water': 0.4  ,
+    'tractor': 0.4  ,
     #'quad bike': 0.5  ,
-    'truck': 0.5  ,
-    'lake': 0.45
+    'truck': 0.4  ,
+    #'lake': 0.4
     }
     promt_rus_dict = {
-    'car': 'транспортное средство',
-    'dog':  'собака',
+    'car': 'Транспортное средство',
+    'dog':  'Собака',
     'helicopter': 'БПЛА/Вертолет',
     'drone': 'БПЛА/Вертолет',
-    'ambulance': 'транспортное средство',
+    'ambulance': 'Транспортное средство',
     #'rescuer': 'Спасатель',
     #'forest': 'Лес',
     'horse': 'Лошадь',
     'stretcher': 'Носилки',
     'road': 'Дорога',
     'hugs': 'Объятия',
-    'tears': 'Слёзы',
+    #'tears': 'Слёзы',
     'police': 'Полиция',
-    'snowmobile': 'транспортное средство',
+    'snowmobile': 'Транспортное средство',
     'reservoir': 'Водоём',
     'army': 'Армия',
     'suspension bridge': 'Навесной мост',
     'ferry crossing': 'Паромная переправа',
-    'tractor': 'транспортное средство',
-    'quad bike': 'транспортное средство',
-    'truck': 'транспортное средство',
-    'lake': 'Озеро'
+    'tractor': 'Транспортное средство',
+    'quad bike': 'Транспортное средство',
+    'truck': 'Транспортное средство',
+    'lake': 'Водоём',
+    'water': 'Водоём'
     }
     #color_standart = {'Машина' : 
     #    }
@@ -90,7 +91,11 @@ def color_seach():
         'МиСи',
         'Чайка'
         ]
-    return search_list
+    season_list = ['Холодный сезон',
+                   'Теплый сезон',
+                    'В городе',
+                     'Загород/Парк', 'Светлое время суток', 'Темное время суток']
+    return search_list, season_list
 
 def promt_build(promt_standart, promt_list_1, standart):
     promt_list = []
@@ -105,12 +110,6 @@ def promt_build(promt_standart, promt_list_1, standart):
                 treshold.append(standart)
     except: 
         print('')
-#    for i in promt_standart:
-#        if i in promt_list:
-#            a = 0
-#        else:
-#            promt_list.append(i) 
-#            treshold.append(promt_standart[i])         
     promt = promt_list[0]
     for i in range(1,len(promt_list)):        
         promt = promt + ' . ' + promt_list[i]
@@ -136,18 +135,14 @@ def promter(promt_list_1):
     return promt, promt_list, treshold
 
 def promter_test(promt_list_1, treshold):   
-    #promt_standart, standart = promt_st()
     promt, promt_list, treshold = promt_test(promt_list_1, treshold)    
     return promt, promt_list, treshold
 def promt_to_rus(promt_list):
     _, _, promt_rus_dict = promt_st()
-    search_list = color_seach()
     promt_list_rus = []
     for i in promt_list:
         if i in promt_rus_dict:
             promt_list_rus.append(promt_rus_dict[i])
         else:
             promt_list_rus.append(i)
-    #for i in search_list:
-    #    promt_list_rus.append(i)
     return promt_list_rus
